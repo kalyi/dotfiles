@@ -1,4 +1,4 @@
-" 
+"
 " Link as: ~/.vimrc
 "
 
@@ -16,13 +16,15 @@ set smartindent
 set smarttab
 set autoindent
 
+" Highlighting
 " TODO
 highlight MyTodo ctermbg=green guibg=green
 match MyTodo /\ctodo/
-"
+
 " FIXME 
 highlight MyFixme ctermbg=red guibg=red
 2match MyFixme /\cfixme/
+call matchadd('MyFixme', '\s\+$')
 " multiple patterns: use \| as delimiter: one\|two
 " "call matchadd('MyFixme', '/FIXME\|Fixme\|fixme/')
 
