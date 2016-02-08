@@ -23,21 +23,26 @@
 # SOFTWARE.
 
 create_symlink() {
-	SOURCE=$1
-	TARGET=$2
-	echo -ne "Linking ${SOURCE} as ${TARGET}... "
-	if [ -f ${SOURCE} ] && [ ! -f ${TARGET} ]
-	then
-		ln -s ${SOURCE} ${TARGET}
-		if [ $? ]
-		then
-		  echo "done."
-		else
-			echo "ERROR!"
-		fi
-	else
-		echo "already exists."
-	fi
+  SOURCE=$1
+  TARGET=$2
+  echo -ne "Linking ${SOURCE} as ${TARGET}... "
+  if [ ! -e ${SOURCE} ]
+  then
+    echo "Source missing."
+    return
+  fi
+  if [ ! -e ${TARGET} ]
+  then
+    ln -s ${SOURCE} ${TARGET}
+    if [ $? ]
+    then
+      echo "Done."
+    else
+      echo "ERROR!"
+    fi
+  else
+    echo "Target already exists."
+  fi
 }
 
 
