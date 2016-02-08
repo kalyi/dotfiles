@@ -24,9 +24,11 @@ match MyTodo /\ctodo/
 " FIXME 
 highlight MyFixme ctermbg=red guibg=red
 2match MyFixme /\cfixme/
-call matchadd('MyFixme', '\s\+$')
-" multiple patterns: use \| as delimiter: one\|two
 " "call matchadd('MyFixme', '/FIXME\|Fixme\|fixme/')
+call matchadd('MyFixme', '\s\+$')
+
+" uppercase current word
+inoremap <c-u> <esc>viwU<esc>i
 
 filetype indent plugin on
 
@@ -46,6 +48,7 @@ autocmd BufNewFile,BufRead *.qs set filetype=javascript
 
 " latex
 autocmd BufNewFile,BufRead *.cls set filetype=tex
+autocmd BufNewFile,BufRead *.lco set filetype=tex
 autocmd FileType tex vmap ,mc !boxes -d tex<CR>
 autocmd FileType tex vmap ,xc !boxes -d tex -r<CR>
 
