@@ -48,6 +48,12 @@ create_symlink() {
 
 DOTFILES=(bash_aliases bashrc tmux.conf vimrc)
 
+if ! type realpath > /dev/null
+then
+	echo "'realpath' not found."
+	exit 1
+fi
+
 for f in ${DOTFILES[@]}
 do
 	SOURCE=$(realpath $f)
