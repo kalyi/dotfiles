@@ -15,6 +15,8 @@ set shiftwidth=2
 set smartindent
 "set smarttab
 "set autoindent
+set splitright
+set splitbelow
 
 " Highlighting
 " TODO
