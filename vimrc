@@ -13,8 +13,8 @@ set tabstop=2
 set noexpandtab
 set shiftwidth=2
 set smartindent
-set smarttab
-set autoindent
+"set smarttab
+"set autoindent
 
 " Highlighting
 " TODO
