@@ -12,9 +12,14 @@ set background=dark
 set tabstop=2
 set noexpandtab
 set shiftwidth=2
-set smartindent
-"set smarttab
-"set autoindent
+
+" copy indent from previous line
+set autoindent
+" disable cindent/smartindent
+set nocindent
+set noautoindent
+
+" window splitting behavior
 set splitright
 set splitbelow
 
@@ -53,6 +58,7 @@ autocmd BufNewFile,BufRead *.cls set filetype=tex
 autocmd BufNewFile,BufRead *.lco set filetype=tex
 autocmd FileType tex vmap ,mc !boxes -d tex<CR>
 autocmd FileType tex vmap ,xc !boxes -d tex -r<CR>
+autocmd FileType tex setlocal indentexpr=
 
 " povray
 autocmd BufEnter *.pov nmap <F5> :w<CR> :!povray +P +W800 +H600 %<CR>
