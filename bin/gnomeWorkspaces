@@ -1,0 +1,96 @@
+#!/bin/bash
+
+# The MIT License (MIT)
+#
+# Copyright (c) 2016 Kathrin Hanauer
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+
+# Configure Gnome workspaces
+
+#echo "Arguments: $@"
+
+if [ -z "$1" ] || [ "$1" = "-h" ] || [ "$1" -lt 1 ]
+then
+	echo "Configure Gnome workspaces."
+	echo
+	echo "Usage:"
+	echo "  Set number of workspaces to <N>:"
+	echo "  \$ $0 <N>"
+	echo
+	echo "  Put \"primary\" as second argument if you want workspaces only on primary display:"
+	echo "  \$ $0 <N> primary"
+	echo
+	exit 0
+fi
+
+NUM_WS=$1
+CUR_WS="$(gsettings get org.gnome.desktop.wm.preferences num-workspaces)"
+
+if [ "$NUM_WS" -lt "$CUR_WS" ]
+then
+	read -p "Current number of workspaces is $CUR_WS. Do you really want to reduce them to $NUM_WS? (yes/no) " AW
+	case $AW in
+		[Yy][Ee][Ss])
+			echo "Okay. Doing as you say..."
+			;;
+		*)
+			echo "Aborting."
+			exit 1
+			;;
+	esac
+fi
+
+echo  "Setting number of workspaces to $NUM_WS..."
+gsettings set org.gnome.desktop.wm.preferences num-workspaces $NUM_WS
+
+echo  "Disabling dynamic workspaces..."
+gsettings set org.gnome.shell.overrides dynamic-workspaces false
+gsettings set org.gnome.mutter dynamic-workspaces false
+
+if [ "$2" = "primary" ]
+then
+	echo  "Setting workspaces only on primary..."
+	gsettings set org.gnome.shell.overrides workspaces-only-on-primary true
+	gsettings set org.gnome.mutter workspaces-only-on-primary true
+else
+	echo  "Setting workspaces NOT only on primary..."
+	gsettings set org.gnome.shell.overrides workspaces-only-on-primary false
+	gsettings set org.gnome.mutter workspaces-only-on-primary false
+fi
+
+
+for i in $(seq 1 $1)
+do
+	echo  "Switch to workspace $i by F$i..."
+	gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-$i "[\"<Primary>F$i\"]"
+  shift 1
+done
+echo "Done."
+
+echo "--------------------------------------------------------------------------------"
+echo "Summary:"
+echo
+echo "Number of workspaces:       $(gsettings get org.gnome.desktop.wm.preferences num-workspaces)"
+echo "Dynamic workspaces:         $(gsettings get org.gnome.mutter dynamic-workspaces)"
+echo "Workspaces only on primary: $(gsettings get org.gnome.mutter workspaces-only-on-primary)"
+echo
+echo "Switching to workspaces:"
+gsettings list-recursively org.gnome.desktop.wm.keybindings | grep switch-to-workspace
+echo "--------------------------------------------------------------------------------"

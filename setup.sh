@@ -88,3 +88,16 @@ fi
 
 cd ${CURDIR}
 
+SCRIPTS=(gnomeWorkspaces)
+if [ ! -d "${HOME}/bin" ]
+then
+	echo -e "Creating directory ~/bin..."
+	mkdir -p "${HOME}/bin"
+fi
+
+for s in ${SCRIPTS[@]}
+do
+	SOURCE=$(realpath bin/$s)
+	TARGET="${HOME}/bin/$s"
+	create_symlink ${SOURCE} ${TARGET}
+done
