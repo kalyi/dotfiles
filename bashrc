@@ -110,6 +110,7 @@ fi
 # https://github.com/magicmonty/bash-git-prompt
 if [ -f ~/.bash-git-prompt/gitprompt.sh ]; then
   GIT_PROMPT_ONLY_IN_REPO=1
+  GIT_PROMPT_FETCH_REMOTE_STATUS=0
   GIT_PROMPT_THEME=Solarized
   source ~/.bash-git-prompt/gitprompt.sh
 fi
