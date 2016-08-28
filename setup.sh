@@ -101,3 +101,23 @@ do
 	TARGET="${HOME}/bin/$s"
 	create_symlink ${SOURCE} ${TARGET}
 done
+
+## vundle
+VIM_BUNDLE_DIR="${HOME}/.vim/bundle"
+VUNDLE="Vundle.vim"
+if [ ! -d ${VIM_BUNDLE_DIR} ]
+then
+	mkdir -p ${VIM_BUNDLE_DIR}
+fi
+
+if [ ! -d ${VIM_BUNDLE_DIR}/${VUNDLE} ]
+then
+	echo "Installing ${VUNDLE}..."
+	git clone https://github.com/VundleVim/Vundle.vim.git ${VIM_BUNDLE_DIR}/${VUNDLE}
+	vim +PluginInstall +qall
+else
+	echo "Updating ${VUNDLE}..."
+	cd ${VIM_BUNDLE_DIR}/${VUNDLE} && git pull
+	vim +PluginUpdate +qall
+fi
+
