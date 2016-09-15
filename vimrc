@@ -93,3 +93,8 @@ autocmd FileType tex setlocal indentexpr=
 " povray
 autocmd BufEnter *.pov nmap <F5> :w<CR> :!povray +P +W800 +H600 %<CR>
 autocmd BufEnter *.pov nmap <F6> :w<CR> :!povray -P +W600 +H480 Initial_Frame=1 Final_Frame=50 %<CR>
+
+" solarized
+call togglebg#map("<F7>")
+
+
